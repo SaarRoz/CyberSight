@@ -1,0 +1,51 @@
+<header>
+  <nav>
+    <app-hamburger-button (buttonClick)="toggleOverlayMenu()" [isOpen]="isHamburgerOpen"></app-hamburger-button>
+
+    <ul>
+      <li class="site-logo">
+        <a
+          [routerLink]="routesConfig.routes.home"
+          (click)="closeOverlayMenu()"
+          [ngClass]="{ 'site-logo-underline': classLogoUnderlineFlag }"
+          >CyberSight</a
+        >
+      </li>
+      <div class="desktop-menu">
+        <li>
+          <a [routerLink]="routesConfig.routes.home">Home</a>
+        </li>
+        <ng-container *ngIf="(isLoggedIn$ | async) === true">
+          <li>
+            <a [routerLink]="routesConfig.routes.prediction.facePrediction">Upload</a>
+          </li>
+          <li>
+            <a [routerLink]="routesConfig.routes.prediction.predictionsHistory">History</a>
+          </li>
+          <li>
+            <a [routerLink]="routesConfig.routes.about">About</a>
+          </li>
+        </ng-container>
+      </div>
+      <li class="current-user" *ngIf="currentUser$ | async as currentUser">
+        <div>
+          <a class="current-user--hello-msg">Hello {{ currentUser.firstName.slice(0, 7) }}</a>
+          <ng-container *ngIf="currentUser.profileImage$ | async as profileImage; else blankProfileImage">
+            <img class="current-user--profile-image" [src]="profileImage" alt="Profile Image" matListAvatar />
+          </ng-container>
+          <ng-template #blankProfileImage>
+            <div class="blank-profile-image current-user--profile-image">
+              {{ (currentUser.firstName ? currentUser.firstName.charAt(0) : "") | uppercase }}
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="current-user--dropdown-panel">
+          <a [routerLink]="routesConfig.routes.user.profile">Edit Profile</a>
+          <a [routerLink]="routesConfig.routes.home" (click)="logOut()">Log out</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <app-overlay-menu *ngIf="isHamburgerOpen" [isUserLoggedIn]="(isLoggedIn$ | async) === true"></app-overlay-menu>
+</header>

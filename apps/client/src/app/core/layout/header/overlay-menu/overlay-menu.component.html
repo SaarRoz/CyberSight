@@ -1,0 +1,18 @@
+<nav>
+  <ul>
+    <li>
+      <a [routerLink]="routesConfig.routes.home" (click)="onClick($event)">Home</a>
+    </li>
+    <ng-container *ngIf="isUserLoggedIn">
+      <li>
+        <a [routerLink]="routesConfig.routes.prediction.facePrediction" (click)="onClick($event)">Upload</a>
+      </li>
+      <li>
+        <a [routerLink]="routesConfig.routes.prediction.predictionsHistory" (click)="onClick($event)">History</a>
+      </li>
+    </ng-container>
+    <li>
+      <a [routerLink]="routesConfig.routes.about" (click)="onClick($event)">About</a>
+    </li>
+  </ul>
+</nav>
